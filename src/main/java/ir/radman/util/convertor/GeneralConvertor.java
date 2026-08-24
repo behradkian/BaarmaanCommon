@@ -1,0 +1,77 @@
+package ir.radman.util.convertor;
+
+import ir.radman.exception.domain.NetworkRuntimeException;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.HexFormat;
+
+import ir.radman.util.string.StringUtility;
+import org.apache.commons.codec.binary.Base64;
+
+public class GeneralConvertor {
+
+    private GeneralConvertor() {
+    }
+
+    public static URL convertStringToURL(String urlString) {
+
+        if (StringUtility.isBlank(urlString)) {
+            throw new NetworkRuntimeException("url is null");
+        }
+
+        URL url;
+        try {
+            url = new URL(urlString);
+        } catch (MalformedURLException e) {
+            throw new NetworkRuntimeException("somethings wrong with the url : " + urlString, e);
+        }
+        return url;
+    }
+
+    public static String convertByteArrayToString(byte[] bytes, Charset charset) {
+        return new String(bytes, charset);
+    }
+
+    public static String convertByteArrayToStringUTF8(byte[] bytes) {
+        return convertByteArrayToString(bytes, StandardCharsets.UTF_8);
+    }
+
+    public static byte[] convertStringToByteArray(String string, Charset charset) {
+        return string.getBytes(charset);
+    }
+
+    public static byte[] convertStringToByteArrayUTF8(String string) {
+        return string.getBytes(StandardCharsets.UTF_8);
+    }
+
+    public static byte[] convertBase64ToByteArray(String imageBase64) {
+        if (StringUtility.isBlank(imageBase64))
+            return null;
+        return Base64.decodeBase64(convertStringToByteArrayUTF8(imageBase64));
+    }
+
+    public static String convertByteArrayToBase64(byte[] bytes) {
+        if (bytes != null && bytes.length > 0)
+            return Base64.encodeBase64String(bytes);
+        return null;
+    }
+
+    public static String bytesToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder(bytes.length * 2);
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
+
+    public static String toHex(byte[] bytes) {
+        return HexFormat.of().formatHex(bytes);
+    }
+
+
+
+
+}

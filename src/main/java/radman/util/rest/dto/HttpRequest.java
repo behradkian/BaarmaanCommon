@@ -1,8 +1,13 @@
-package radman.util.rest;
+package radman.util.rest.dto;
 
-import radman.util.general.enumeration.http.ContentType;
-import radman.util.general.enumeration.http.HttpMethod;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import radman.util.rest.AuthorizationConfiguration;
+import radman.util.rest.enumeration.ContentType;
+import radman.util.rest.enumeration.HttpMethod;
 
 import java.io.Serializable;
 import java.net.URL;
@@ -10,7 +15,6 @@ import java.util.Map;
 
 /**
  * @author : Pedram Behradkian
- * @date : 2025/11/07
  */
 @Builder
 @Getter

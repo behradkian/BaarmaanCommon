@@ -1,8 +1,8 @@
-package radman.util.rest;
+package radman.util.rest.dto;
 
-import radman.util.general.enumeration.http.ContentType;
-import radman.util.general.enumeration.http.HttpMethod;
 import lombok.Builder;
+import radman.util.rest.enumeration.ContentType;
+import radman.util.rest.enumeration.HttpMethod;
 
 import java.util.Map;
 

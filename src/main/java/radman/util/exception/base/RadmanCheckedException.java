@@ -1,6 +1,6 @@
 package radman.util.exception.base;
 
-import radman.util.general.enumeration.http.StatusCode;
+import radman.util.rest.enumeration.HttpStatusCode;
 import lombok.Getter;
 
 import java.io.Serial;
@@ -16,28 +16,28 @@ public abstract class RadmanCheckedException extends Exception implements Serial
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final StatusCode status;
+    private final HttpStatusCode status;
     private final String errorCode;
     private final Map<String, Object> params;
     private final Instant timestamp;
 
     public RadmanCheckedException(String message) {
-        this(StatusCode.BAD_REQUEST, null, null, message, null);
+        this(HttpStatusCode.BAD_REQUEST, null, null, message, null);
     }
 
     public RadmanCheckedException(String message, Throwable cause) {
-        this(StatusCode.BAD_REQUEST, null, null, message, cause);
+        this(HttpStatusCode.BAD_REQUEST, null, null, message, cause);
     }
 
-    public RadmanCheckedException(StatusCode status, String message) {
+    public RadmanCheckedException(HttpStatusCode status, String message) {
         this(status, null, null, message, null);
     }
 
-    public RadmanCheckedException(StatusCode status, String errorCode, String message) {
+    public RadmanCheckedException(HttpStatusCode status, String errorCode, String message) {
         this(status, errorCode, null, message, null);
     }
 
-    protected RadmanCheckedException(StatusCode status, String errorCode, Map<String, Object> params, String message, Throwable cause) {
+    protected RadmanCheckedException(HttpStatusCode status, String errorCode, Map<String, Object> params, String message, Throwable cause) {
         super(message, cause);
         this.status = status;
         this.errorCode = (errorCode != null ? errorCode : this.getClass().getSimpleName());

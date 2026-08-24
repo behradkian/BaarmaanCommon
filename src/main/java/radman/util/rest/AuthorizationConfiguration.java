@@ -1,11 +1,14 @@
 package radman.util.rest;
 
-import radman.util.general.enumeration.http.AuthorizationType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import radman.util.rest.enumeration.AuthorizationType;
 
 /**
  * @author : Pedram Behradkian
- * @date : 2025/11/07
  */
 @Builder
 @Getter

@@ -1,4 +1,4 @@
-package radman.util.general.enumeration.http;
+package radman.util.rest.enumeration;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +7,6 @@ import java.io.Serializable;
 
 /**
  * @author : Pedram Behradkian
- * @date : 2025/11/07
  */
 @Getter
 @AllArgsConstructor

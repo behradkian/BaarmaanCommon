@@ -1,4 +1,4 @@
-package radman.util.rest;
+package radman.util.rest.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,10 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import radman.util.general.enumeration.http.AuthorizationType;
-import radman.util.general.enumeration.http.ContentType;
-import radman.util.general.enumeration.http.HttpMethod;
-import radman.util.general.enumeration.http.SecurityProtocol;
+import radman.util.rest.enumeration.AuthorizationType;
+import radman.util.rest.enumeration.ContentType;
+import radman.util.rest.enumeration.HttpMethod;
+import radman.util.rest.enumeration.SecurityProtocol;
 
 import java.io.Serial;
 import java.io.Serializable;

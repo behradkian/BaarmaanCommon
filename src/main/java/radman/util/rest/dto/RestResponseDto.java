@@ -1,8 +1,13 @@
-package radman.util.rest;
+package radman.util.rest.dto;
 
-import radman.util.general.enumeration.http.StatusCode;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import radman.util.convertor.JsonConvertor;
-import lombok.*;
+import radman.util.rest.enumeration.HttpStatusCode;
 
 import java.util.Map;
 
@@ -10,7 +15,6 @@ import java.util.Map;
  * Enhanced REST response DTO with additional metadata
  *
  * @author : Pedram Behradkian
- * @date : 2025/11/10
  */
 @Getter
 @Setter
@@ -19,7 +23,7 @@ import java.util.Map;
 @AllArgsConstructor
 @ToString
 public class RestResponseDto {
-    private StatusCode statusCode;
+    private HttpStatusCode httpStatusCode;
     private Map<String, String> headers;
     private String body;
     private String contentType;
@@ -27,7 +31,7 @@ public class RestResponseDto {
     private long responseTime;
 
     public boolean isSuccess() {
-        return statusCode != null && statusCode.isSuccess();
+        return httpStatusCode != null && httpStatusCode.isSuccess();
     }
 
     public boolean hasBody() {
@@ -35,11 +39,11 @@ public class RestResponseDto {
     }
 
     public boolean isClientError() {
-        return statusCode != null && statusCode.isClientError();
+        return httpStatusCode != null && httpStatusCode.isClientError();
     }
 
     public boolean isServerError() {
-        return statusCode != null && statusCode.isServerError();
+        return httpStatusCode != null && httpStatusCode.isServerError();
     }
 
     public String getHeader(String name) {

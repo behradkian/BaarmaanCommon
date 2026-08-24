@@ -1,4 +1,4 @@
-package radman.util.general.enumeration.http;
+package radman.util.rest.enumeration;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,11 +11,10 @@ import java.util.Arrays;
  * Provides helper methods for reverse lookup and category detection.
  *
  * @author : Pedram Behradkian
- * @date : 2025/11/07
  */
 @Getter
 @AllArgsConstructor
-public enum StatusCode implements Serializable {
+public enum HttpStatusCode implements Serializable {
 
     // --- 2xx: Success ---
     OK(200),
@@ -68,7 +67,7 @@ public enum StatusCode implements Serializable {
      * @param code integer HTTP code
      * @return matching StatusCode or null if not found
      */
-    public static StatusCode getByCode(int code) {
+    public static HttpStatusCode getByCode(int code) {
         return Arrays.stream(values())
                 .filter(status -> status.code == code)
                 .findFirst()

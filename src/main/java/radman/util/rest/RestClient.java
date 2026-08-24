@@ -1,24 +1,34 @@
 package radman.util.rest;
 
-import radman.util.general.enumeration.http.AuthorizationType;
-import radman.util.general.enumeration.http.ContentType;
-import radman.util.general.enumeration.http.HttpMethod;
-import radman.util.general.enumeration.http.StatusCode;
+import lombok.extern.slf4j.Slf4j;
+import radman.util.rest.dto.RestRequestDto;
+import radman.util.rest.dto.RestResponseDto;
+import radman.util.rest.enumeration.AuthorizationType;
+import radman.util.rest.enumeration.ContentType;
+import radman.util.rest.enumeration.HttpMethod;
+import radman.util.rest.enumeration.HttpStatusCode;
 import radman.util.string.StringUtility;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -27,9 +37,8 @@ import java.util.stream.Collectors;
  * @author : Pedram Behradkian
  * @date : 2025/11/10
  */
+@Slf4j
 public class RestClient {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestClient.class);
 
     private final boolean enableSSLVerification;
     private final int defaultConnectionTimeout;
@@ -92,7 +101,7 @@ public class RestClient {
             connection = createConnection(request);
             return executeRequest(connection, request, startTime);
         } catch (Exception e) {
-            LOGGER.error("Error executing REST call to {}: {}", request.getUrl(), e.getMessage(), e);
+            log.error("Error executing REST call to {}: {}", request.getUrl(), e.getMessage(), e);
             return buildErrorResponse(e, request.getUrl(), startTime);
         } finally {
             closeConnection(connection);
@@ -295,7 +304,7 @@ public class RestClient {
             connection.setHostnameVerifier((hostname, session) -> true);
 
         } catch (Exception e) {
-            LOGGER.warn("Failed to configure SSL bypass: {}", e.getMessage());
+            log.warn("Failed to configure SSL bypass: {}", e.getMessage());
         }
     }
 
@@ -337,7 +346,7 @@ public class RestClient {
         String responseContentType = connection.getContentType();
         long responseTime = System.currentTimeMillis() - startTime;
         if (request.isEnableLogging()) {
-            LOGGER.info("HTTP {} {} - Status: {} - Time: {}ms", request.getMethod(), request.getUrl(), statusCode, responseTime);
+            log.info("HTTP {} {} - Status: {} - Time: {}ms", request.getMethod(), request.getUrl(), statusCode, responseTime);
         }
         return buildSuccessResponse(statusCode, responseBody, responseHeaders, responseContentType, request.getUrl(), responseTime);
     }
@@ -412,7 +421,7 @@ public class RestClient {
                 case OCTET_STREAM -> convertToOctetStream(request.getBody());
             };
         } catch (Exception e) {
-            LOGGER.error("Error converting body to string for content type {}: {}", request.getContentType(), e.getMessage(), e);
+            log.error("Error converting body to string for content type {}: {}", request.getContentType(), e.getMessage(), e);
             throw new RuntimeException("Failed to convert request body", e);
         }
     }
@@ -424,7 +433,7 @@ public class RestClient {
         try {
             return "<root>" + StringUtility.toJsonString(body).replace("\"", "") + "</root>";
         } catch (Exception e) {
-            LOGGER.warn("Failed to convert object to XML, using toString: {}", e.getMessage());
+            log.warn("Failed to convert object to XML, using toString: {}", e.getMessage());
             return body.toString();
         }
     }
@@ -500,7 +509,7 @@ public class RestClient {
                                                  Map<String, String> headers, String contentType,
                                                  String requestUrl, long responseTime) {
         return RestResponseDto.builder()
-                .statusCode(StatusCode.getByCode(statusCode))
+                .httpStatusCode(HttpStatusCode.getByCode(statusCode))
                 .body(body)
                 .headers(headers)
                 .contentType(contentType)
@@ -513,7 +522,7 @@ public class RestClient {
         long responseTime = System.currentTimeMillis() - startTime;
 
         return RestResponseDto.builder()
-                .statusCode(StatusCode.INTERNAL_SERVER_ERROR)
+                .httpStatusCode(HttpStatusCode.INTERNAL_SERVER_ERROR)
                 .body("{\"error\":\"" + e.getMessage() + "\"}")
                 .requestUrl(requestUrl)
                 .responseTime(responseTime)
@@ -534,7 +543,7 @@ public class RestClient {
         try {
             return URLEncoder.encode(value, StandardCharsets.UTF_8.name());
         } catch (UnsupportedEncodingException e) {
-            LOGGER.warn("UTF-8 encoding not supported, using default encoding");
+            log.warn("UTF-8 encoding not supported, using default encoding");
             return URLEncoder.encode(value);
         }
     }

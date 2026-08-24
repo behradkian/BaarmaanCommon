@@ -1,6 +1,6 @@
 package radman.util.exception.base;
 
-import radman.util.general.enumeration.http.StatusCode;
+import radman.util.rest.enumeration.HttpStatusCode;
 import lombok.Getter;
 
 import java.io.Serial;
@@ -26,35 +26,35 @@ public abstract class RadmanRuntimeException extends RuntimeException implements
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final StatusCode status;
+    private final HttpStatusCode status;
     private final String errorCode;
     private final Map<String, Object> params;
     private final Instant timestamp;
 
     public RadmanRuntimeException(String message) {
-        this(StatusCode.BAD_REQUEST, null, null, message, null);
+        this(HttpStatusCode.BAD_REQUEST, null, null, message, null);
     }
 
     public RadmanRuntimeException(String message, Throwable cause) {
-        this(StatusCode.BAD_REQUEST, null, null, message, cause);
+        this(HttpStatusCode.BAD_REQUEST, null, null, message, cause);
     }
 
 
-    public RadmanRuntimeException(StatusCode status, String message) {
+    public RadmanRuntimeException(HttpStatusCode status, String message) {
         this(status, null, null, message, null);
     }
 
-    public RadmanRuntimeException(StatusCode status, String message, Throwable cause) {
+    public RadmanRuntimeException(HttpStatusCode status, String message, Throwable cause) {
         this(status, null, null, message, cause);
     }
 
-    public RadmanRuntimeException(StatusCode status, String errorCode, String message) {
+    public RadmanRuntimeException(HttpStatusCode status, String errorCode, String message) {
         this(status, errorCode, null, message, null);
     }
 
-    protected RadmanRuntimeException(StatusCode status, String errorCode, Map<String, Object> params, String message, Throwable cause) {
+    protected RadmanRuntimeException(HttpStatusCode status, String errorCode, Map<String, Object> params, String message, Throwable cause) {
         super(message, cause);
-        this.status = status != null ? status : StatusCode.INTERNAL_SERVER_ERROR;
+        this.status = status != null ? status : HttpStatusCode.INTERNAL_SERVER_ERROR;
         this.errorCode = (errorCode != null ? errorCode : this.getClass().getSimpleName());
         this.params = (params == null ? Collections.emptyMap() : Map.copyOf(params));
         this.timestamp = Instant.now();
